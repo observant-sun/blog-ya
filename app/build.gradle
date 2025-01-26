@@ -16,13 +16,27 @@ repositories {
 }
 
 dependencies {
-    // Use JUnit Jupiter for testing.
-    testImplementation libs.junit.jupiter
-
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-
     // This dependency is used by the application.
     implementation libs.guava
+    // https://mvnrepository.com/artifact/org.springframework/spring-core
+    implementation 'org.springframework:spring-core:6.2.2'
+    // https://mvnrepository.com/artifact/org.springframework/spring-web
+    implementation 'org.springframework:spring-web:6.2.2'
+    // https://mvnrepository.com/artifact/org.springframework.data/spring-data-jdbc
+    implementation 'org.springframework.data:spring-data-jdbc:3.4.2'
+    // https://mvnrepository.com/artifact/org.postgresql/postgresql
+    implementation 'org.postgresql:postgresql:42.7.5'
+    // https://mvnrepository.com/artifact/org.projectlombok/lombok
+    compileOnly 'org.projectlombok:lombok:1.18.36'
+
+    /********
+    test dependencies
+    ********/
+    // Use JUnit Jupiter for testing.
+    testImplementation libs.junit.jupiter
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    // https://mvnrepository.com/artifact/org.springframework/spring-test
+    testImplementation 'org.springframework:spring-test:6.2.2'
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
