@@ -7,7 +7,7 @@ import java.util.List;
 
 @Builder
 public record Post(
-        Long id,
+        Integer id,
         String title,
         String body,
         // TODO: как добавить картинку?
@@ -15,6 +15,6 @@ public record Post(
         List<String> tags,
         Integer likes,
         Timestamp created,
-        Timestamp modified
+        Timestamp updated
 ) {
 }

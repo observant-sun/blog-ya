@@ -3,10 +3,10 @@ package ru.mkryuchkov.blogya.model;
 import java.sql.Timestamp;
 
 public record PostComment(
-        Long id,
-        Long postId,
+        Integer id,
+        Integer postId,
         String text,
         Timestamp created,
-        Timestamp modified
+        Timestamp updated
 ) {
 }
