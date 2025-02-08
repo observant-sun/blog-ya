@@ -28,13 +28,6 @@ public class JdbcNativePostRepository implements PostRepository {
     );
 
     @Override
-    public List<Post> findAll(Integer limit, Integer offset) {
-        String sql = "select * from post order by created desc limit ? offset ?";
-
-        return jdbcTemplate.query(sql, postRowMapper, limit, offset);
-    }
-
-    @Override
     public Optional<Post> findById(Integer id) {
         String sql = "select * from post where id = ?";
         List<Post> postList = jdbcTemplate.query(sql, postRowMapper, id);
