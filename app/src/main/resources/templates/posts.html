@@ -64,40 +64,23 @@
 <body>
 <h1>Блог</h1>
 <button class="btn-add" onclick="toggleAddPostForm()">Добавить пост</button>
-<div th:if="${#lists.isEmpty(posts)}">
+<div th:if="${#lists.isEmpty(postPreviews)}">
     <p>No posts available.</p>
 </div>
-<div th:if="${!#lists.isEmpty(posts)}">
+<div th:if="${!#lists.isEmpty(postPreviews)}">
     <ul>
-        <li th:each="post : ${posts}">
+        <li th:each="post : ${postPreviews}">
             <h2 th:text="${post.title}">Post Title</h2>
-            <p th:text="${post.body}">Post body content...</p>
+            <p th:text="${post.bodyPreview}">Post body content...</p>
             <p>
-                Tags: <span th:text="${!#post.tags}">tag1, tag2</span> |
+<!--                Tags: <span th:text="${!#post.tags}">tag1, tag2</span> |-->
                 Likes: <span th:text="${post.likes}">0</span>
+                Comments: <span th:text="${post.commentsCount}">0</span>
             </p>
             <p>
                 Created: <span th:text="${#dates.format(post.created, 'yyyy-MM-dd HH:mm')}">Date</span> |
                 Updated: <span th:text="${#dates.format(post.updated, 'yyyy-MM-dd HH:mm')}">Date</span>
             </p>
-            <button th:onclick="'likePost(' + ${post.id} + ')'">Лайкнуть пост</button>
-            <button th:onclick="'toggleAddCommentForm(' + ${post.id} + ')'">Добавить комментарий</button>
-            <div class="form-container" style="display: none;" th:id="addCommentForm_ + ${post.id}">
-                <h2>Новый комментарий</h2>
-                <form th:action="@{/comment/new}" method="POST">
-                    <label>Название:
-                        <input type="text" th:id="comment_title_ + ${post.id}" name="title" required>
-                    </label>
-                    <label>Текст:
-                        <textarea class="form-control" th:id="comment_body_ + ${post.id}" name="body" rows="5"
-                                  required></textarea>
-                    </label>
-                    <label>Теги:
-                        <input type="text" th:id="comment_tags_ + ${post.id}" name="tags" required>
-                    </label>
-                    <button type="submit">Добавить</button>
-                </form>
-            </div>
         </li>
     </ul>
 </div>
