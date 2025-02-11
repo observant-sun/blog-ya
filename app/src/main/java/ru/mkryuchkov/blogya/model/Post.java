@@ -12,7 +12,7 @@ public record Post(
         String body,
         // TODO: как добавить картинку?
 //        String pictureUUID,
-        List<String> tags,
+        String tags,
         Integer likes,
         Timestamp created,
         Timestamp updated

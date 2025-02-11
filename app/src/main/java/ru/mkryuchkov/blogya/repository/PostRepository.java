@@ -7,7 +7,9 @@ import java.util.Optional;
 public interface PostRepository {
 
     Optional<Post> findById(Integer id);
-    void save(Post post);
+    void saveNew(Post post);
+    void update(Post post);
+    boolean existsById(Integer id);
     void deleteById(Integer id);
 
 }

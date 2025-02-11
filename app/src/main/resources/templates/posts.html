@@ -73,8 +73,8 @@
             <h2 th:text="${post.title}">Post Title</h2>
             <p th:text="${post.bodyPreview}">Post body content...</p>
             <p>
-<!--                Tags: <span th:text="${!#post.tags}">tag1, tag2</span> |-->
-                Likes: <span th:text="${post.likes}">0</span>
+                Tags: <span th:text="${post.tags}">tag1, tag2</span> |
+                Likes: <span th:text="${post.likes}">0</span> |
                 Comments: <span th:text="${post.commentsCount}">0</span>
             </p>
             <p>

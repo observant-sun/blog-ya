@@ -20,8 +20,7 @@ public class JdbcNativePostPreviewRepository implements PostPreviewRepository {
             rs.getInt("id"),
             rs.getString("title"),
             rs.getString("body_preview"),
-            List.of(), // TODO implement
-//            Arrays.stream(Optional.ofNullable(rs.getString("tags")).orElse("").split(",")).toList(),
+            rs.getString("tags"),
             rs.getInt("comments_count"),
             rs.getInt("likes"),
             rs.getTimestamp("created"),
@@ -30,7 +29,6 @@ public class JdbcNativePostPreviewRepository implements PostPreviewRepository {
 
     @Override
     public List<PostPreview> findAll(Integer limit, Integer offset) {
-        // TODO сортировка тегов в алфавитном порядке
         String sql = """
                 select id, title, substr(body, 0, ?) as body_preview, likes, created, updated,
                 (select string_agg(post_tag.tag, ', ') from post_tag where post_tag.post_id = post.id group by id) as tags,

@@ -6,8 +6,9 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import ru.mkryuchkov.blogya.model.Post;
 
-import java.util.Arrays;
-import java.util.Collections;
+import java.sql.PreparedStatement;
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,7 +22,7 @@ public class JdbcNativePostRepository implements PostRepository {
             rs.getInt("id"),
             rs.getString("title"),
             rs.getString("body"),
-            Arrays.stream(Optional.ofNullable(rs.getString("tags")).orElse("").split(",")).toList(),
+            rs.getString("tags"),
             rs.getInt("likes"),
             rs.getTimestamp("created"),
             rs.getTimestamp("updated")
@@ -35,11 +36,61 @@ public class JdbcNativePostRepository implements PostRepository {
     }
 
     @Override
-    public void save(Post post) {
-        String sql = "insert into post(id, title, body, tags, likes, created, updated) values (?, ?, ?, ?, ?, ?, ?)";
+    public void saveNew(Post post) {
+        Timestamp now = Timestamp.from(Instant.now());
 
-        String tags = String.join(",", Optional.ofNullable(post.tags()).orElse(Collections.emptyList()));
-        jdbcTemplate.update(sql, post.id(), post.title(), post.body(), tags, post.likes(), post.created(), post.updated());
+        String title = post.title();
+        String body = post.body();
+        String tags = post.tags();
+        int likes = 0;
+
+        jdbcTemplate.update(con -> {
+            PreparedStatement ps = con.prepareStatement(
+                    "insert into post(title, body, likes, tags, created, updated) values (?, ?, ?, ?, ?, ?)");
+            ps.setString(1, title);
+            ps.setString(2, body);
+            ps.setInt(3, likes);
+            ps.setString(4, tags);
+            ps.setTimestamp(5, now);
+            ps.setTimestamp(6, now);
+            return ps;
+        });
+    }
+
+    @Override
+    public boolean existsById(Integer id) {
+        String sql = "select count(*) from post where id = ?";
+        Integer count = jdbcTemplate.queryForObject(sql, Integer.class, id);
+        return count != null && count > 0;
+    }
+
+    @Override
+    public void update(Post post) {
+        Optional<Post> byId = findById(post.id());
+        if (byId.isEmpty()) {
+            throw new RuntimeException("Post not found");
+        }
+
+        Timestamp now = Timestamp.from(Instant.now());
+
+        String title = post.title();
+        String body = post.body();
+        String tags = post.tags();
+
+        jdbcTemplate.update(con -> {
+            PreparedStatement ps = con.prepareStatement(
+                    """
+                    update post
+                        set title = ?, body = ?, tags = ?, updated = ?
+                        where id = ?
+                    """);
+            ps.setString(1, title);
+            ps.setString(2, body);
+            ps.setString(3, tags);
+            ps.setTimestamp(4, now);
+            ps.setInt(5, post.id());
+            return ps;
+        });
     }
 
     @Override

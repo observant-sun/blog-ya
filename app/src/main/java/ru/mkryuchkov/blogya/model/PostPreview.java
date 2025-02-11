@@ -9,7 +9,7 @@ public record PostPreview(
         String bodyPreview,
         // TODO: как добавить картинку?
 //        String pictureUUID,
-        List<String> tags,
+        String tags,
         Integer commentsCount,
         Integer likes,
         Timestamp created,
