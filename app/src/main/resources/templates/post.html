@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Название страницы-->
+  <title>Блог</title>
+
+  <!-- Стили страницы -->
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    h1 {
+      text-align: center;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: left;
+    }
+    th {
+      background-color: #f4f4f4;
+    }
+    .actions {
+      text-align: center;
+    }
+    .form-container {
+      margin-top: 20px;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+    }
+    input[type="text"], input[type="number"], input[type="checkbox"] {
+      width: 100%;
+      padding: 5px;
+      margin-top: 5px;
+    }
+    button {
+      padding: 10px 20px;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+    .btn-add {
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+<р1 th:text="${post.title}">Post Title</р1>
+<p th:text="${post.body}">Post body content...</p>
+<p>
+  Tags: <span th:text="${post.tags}">tag1, tag2</span> |
+  Likes: <span th:text="${post.likes}">0</span> |
+<!--  Comments: <span th:text="${post.comments}">0</span>-->
+</p>
+<p>
+  Created: <span th:text="${#dates.format(post.created, 'yyyy-MM-dd HH:mm')}">Date</span> |
+  Updated: <span th:text="${#dates.format(post.updated, 'yyyy-MM-dd HH:mm')}">Date</span>
+</p>
+</div>
+
+<!-- Скрываемая форма для добавления нового пользователя -->
+<div class="form-container" style="display: none;" id="userForm">
+  <h2>Новый пост</h2>
+  <form th:action="@{/users}" method="POST">
+    <label for="firstName">Имя:</label>
+    <input type="text" id="firstName" name="firstName" required>
+    <label for="lastName">Фамилия:</label>
+    <input type="text" id="lastName" name="lastName" required>
+    <label for="age">Возраст:</label>
+    <input type="number" id="age" name="age" required>
+    <label for="active">Активен:</label>
+    <input type="checkbox" id="active" name="active">
+    <button type="submit">Добавить</button>
+  </form>
+</div>
+
+</body>
+</html>

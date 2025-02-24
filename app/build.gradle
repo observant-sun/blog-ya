@@ -37,8 +37,10 @@ dependencies {
     implementation 'org.springframework.data:spring-data-jdbc:3.4.2'
     // https://mvnrepository.com/artifact/org.postgresql/postgresql
     implementation 'org.postgresql:postgresql:42.7.5'
-    // https://mvnrepository.com/artifact/org.projectlombok/lombok
-
+    // https://mvnrepository.com/artifact/org.mapstruct/mapstruct
+    implementation 'org.mapstruct:mapstruct:1.6.3'
+    // https://mvnrepository.com/artifact/org.mapstruct/mapstruct-processor
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.6.3'
     /********
     test dependencies
     ********/

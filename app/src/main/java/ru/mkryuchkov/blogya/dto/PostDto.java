@@ -1,13 +1,12 @@
-package ru.mkryuchkov.blogya.model;
+package ru.mkryuchkov.blogya.dto;
 
 import lombok.Builder;
 
 import java.sql.Timestamp;
-import java.util.List;
 
 @Builder
-public record Post(
-        Integer id,
+public record PostDto(
+        Long id,
         String title,
         String body,
         // TODO: как добавить картинку?

@@ -6,7 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import ru.mkryuchkov.blogya.model.PostPreview;
+import ru.mkryuchkov.blogya.dto.PostPreviewDto;
 import ru.mkryuchkov.blogya.service.PostPreviewService;
 
 import java.util.List;
@@ -26,7 +26,7 @@ public class PostPreviewController {
         page = page == null ? 0 : page;
         pageSize = pageSize == null ? 10 : pageSize;
 
-        List<PostPreview> postPreviewPage = postPreviewService.findAll(tag, page, pageSize);
+        List<PostPreviewDto> postPreviewPage = postPreviewService.findAll(tag, page, pageSize);
 
         model.addAttribute("postPreviews", postPreviewPage);
 

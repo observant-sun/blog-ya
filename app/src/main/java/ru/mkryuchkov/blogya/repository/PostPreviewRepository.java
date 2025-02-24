@@ -1,6 +1,7 @@
 package ru.mkryuchkov.blogya.repository;
 
-import ru.mkryuchkov.blogya.model.PostPreview;
+import ru.mkryuchkov.blogya.dto.PostPreviewDto;
+import ru.mkryuchkov.blogya.entity.PostPreview;
 
 import java.util.List;
 

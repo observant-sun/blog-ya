@@ -1,10 +1,10 @@
-package ru.mkryuchkov.blogya.model;
+package ru.mkryuchkov.blogya.dto;
 
 import java.sql.Timestamp;
 
-public record PostComment(
-        Integer id,
-        Integer postId,
+public record PostCommentDto(
+        Long id,
+        Long postId,
         String text,
         Timestamp created,
         Timestamp updated

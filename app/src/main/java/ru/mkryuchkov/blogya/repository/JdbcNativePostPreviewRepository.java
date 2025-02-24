@@ -4,7 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-import ru.mkryuchkov.blogya.model.PostPreview;
+import ru.mkryuchkov.blogya.dto.PostPreviewDto;
+import ru.mkryuchkov.blogya.entity.PostPreview;
 
 import java.util.List;
 
@@ -17,7 +18,7 @@ public class JdbcNativePostPreviewRepository implements PostPreviewRepository {
     private final JdbcTemplate jdbcTemplate;
 
     private final RowMapper<PostPreview> postPreviewRowMapper = (rs, rowNum) -> new PostPreview(
-            rs.getInt("id"),
+            rs.getLong("id"),
             rs.getString("title"),
             rs.getString("body_preview"),
             rs.getString("tags"),

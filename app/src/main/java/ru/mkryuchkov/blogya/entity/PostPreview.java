@@ -1,10 +1,9 @@
-package ru.mkryuchkov.blogya.model;
+package ru.mkryuchkov.blogya.entity;
 
 import java.sql.Timestamp;
-import java.util.List;
 
 public record PostPreview(
-        Integer id,
+        Long id,
         String title,
         String bodyPreview,
         // TODO: как добавить картинку?
@@ -15,5 +14,4 @@ public record PostPreview(
         Timestamp created,
         Timestamp updated
 ) {
-
 }

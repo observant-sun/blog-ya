@@ -1,15 +1,15 @@
 package ru.mkryuchkov.blogya.repository;
 
-import ru.mkryuchkov.blogya.model.Post;
+import ru.mkryuchkov.blogya.entity.Post;
 
 import java.util.Optional;
 
 public interface PostRepository {
 
-    Optional<Post> findById(Integer id);
+    Optional<Post> findById(Long id);
     void saveNew(Post post);
     void update(Post post);
-    boolean existsById(Integer id);
-    void deleteById(Integer id);
+    boolean existsById(Long id);
+    void deleteById(Long id);
 
 }
