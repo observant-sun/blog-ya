@@ -2,11 +2,13 @@ package ru.mkryuchkov.blogya.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.mkryuchkov.blogya.dto.PostDto;
 import ru.mkryuchkov.blogya.entity.Post;
 import ru.mkryuchkov.blogya.mapper.PostMapper;
-import ru.mkryuchkov.blogya.repository.PostCommentRepository;
+import ru.mkryuchkov.blogya.mapper.PostTagMapper;
 import ru.mkryuchkov.blogya.repository.PostRepository;
+import ru.mkryuchkov.blogya.repository.PostTagRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,28 +17,32 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class PostService {
 
-    private final PostCommentRepository postCommentRepository;
     private final PostRepository postRepository;
+    private final PostTagRepository postTagRepository;
+
     private final PostMapper postMapper;
+    private final PostTagMapper postTagMapper;
 
-    public void saveNew(PostDto postDto) {
-        if (postDto.id() != null) {
-            throw new RuntimeException("PostDto id is already set");
-        }
+    @Transactional
+    public void save(PostDto postDto) {
         Post post = postMapper.toEntity(postDto);
-        postRepository.saveNew(post);
+        Long postId = Optional.ofNullable(post).map(Post::id).orElse(null);
+
+        if (postId != null) {
+            postRepository.update(post);
+        } else {
+            postId = postRepository.saveNew(post);
+        }
+
+        List<String> tags = postTagMapper.toList(postDto.tags());
+        postTagRepository.rewriteAllTagsForPost(postId, tags);
     }
 
-    public void update(PostDto postDto) {
-        if (postDto.id() == null) {
-            throw new RuntimeException("PostDto id is unset");
-        }
-        Post post = postMapper.toEntity(postDto);
-        postRepository.update(post);
-    }
-
+    @Transactional
     public Optional<PostDto> findById(Long id) {
         Optional<Post> postOpt = postRepository.findById(id);
-        return postOpt.map(post -> postMapper.toDto(post, "")); // TODO
+        List<String> tagList = Optional.ofNullable(postTagRepository.getTagsForPost(id)).orElse(List.of());
+        String tags = postTagMapper.toCommaDelimitedString(tagList);
+        return postOpt.map(post -> postMapper.toDto(post, tags));
     }
 }

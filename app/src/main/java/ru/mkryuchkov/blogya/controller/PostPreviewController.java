@@ -26,7 +26,7 @@ public class PostPreviewController {
         page = page == null ? 0 : page;
         pageSize = pageSize == null ? 10 : pageSize;
 
-        List<PostPreviewDto> postPreviewPage = postPreviewService.findAll(tag, page, pageSize);
+        List<PostPreviewDto> postPreviewPage = postPreviewService.getPage(tag, page, pageSize);
 
         model.addAttribute("postPreviews", postPreviewPage);
 

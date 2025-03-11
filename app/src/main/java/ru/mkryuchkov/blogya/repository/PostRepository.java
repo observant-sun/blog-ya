@@ -7,9 +7,13 @@ import java.util.Optional;
 public interface PostRepository {
 
     Optional<Post> findById(Long id);
-    void saveNew(Post post);
+
+    Long saveNew(Post post);
+
     void update(Post post);
+
     boolean existsById(Long id);
+
     void deleteById(Long id);
 
 }

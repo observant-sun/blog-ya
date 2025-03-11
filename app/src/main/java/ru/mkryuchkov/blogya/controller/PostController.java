@@ -16,16 +16,9 @@ public class PostController {
 
     private final PostService postService;
 
-    @PostMapping("/new")
-    public String saveNew(@ModelAttribute PostDto post) {
-        postService.saveNew(post);
-
-        return "redirect:/posts";
-    }
-
-    @PostMapping("/update")
-    public String update(@ModelAttribute PostDto post) {
-        postService.update(post);
+    @PostMapping("/save")
+    public String save(@ModelAttribute PostDto post) {
+        postService.save(post);
 
         return "redirect:/posts";
     }
