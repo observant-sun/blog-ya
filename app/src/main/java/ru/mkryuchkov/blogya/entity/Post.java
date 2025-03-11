@@ -6,8 +6,7 @@ public record Post (
     Long id,
     String title,
     String body,
-    // TODO: как добавить картинку?
-//        String pictureUUID,
+    String imageUuid,
     Integer likes,
     Timestamp created,
     Timestamp updated

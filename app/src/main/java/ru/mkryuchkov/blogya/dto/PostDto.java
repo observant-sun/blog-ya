@@ -9,8 +9,7 @@ public record PostDto(
         Long id,
         String title,
         String body,
-        // TODO: как добавить картинку?
-//        String pictureUUID,
+        String imageUuid,
         String tags,
         Integer likes,
         Timestamp created,

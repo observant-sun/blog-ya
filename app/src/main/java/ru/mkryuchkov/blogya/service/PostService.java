@@ -24,8 +24,8 @@ public class PostService {
     private final PostTagMapper postTagMapper;
 
     @Transactional
-    public void save(PostDto postDto) {
-        Post post = postMapper.toEntity(postDto);
+    public void save(PostDto postDto, String imageUuid) {
+        Post post = postMapper.toEntity(postDto, imageUuid);
         Long postId = Optional.ofNullable(post).map(Post::id).orElse(null);
 
         if (postId != null) {

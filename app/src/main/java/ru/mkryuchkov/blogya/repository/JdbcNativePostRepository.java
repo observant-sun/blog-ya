@@ -25,6 +25,7 @@ public class JdbcNativePostRepository implements PostRepository {
             rs.getLong("id"),
             rs.getString("title"),
             rs.getString("body"),
+            rs.getString("image_uuid"),
             rs.getInt("likes"),
             rs.getTimestamp("created"),
             rs.getTimestamp("updated")
@@ -33,6 +34,7 @@ public class JdbcNativePostRepository implements PostRepository {
             rs.getLong("id"),
             rs.getString("title"),
             rs.getString("body"),
+            rs.getString("image_uuid"),
             rs.getInt("likes"),
             rs.getTimestamp("created"),
             rs.getTimestamp("updated")
@@ -40,7 +42,7 @@ public class JdbcNativePostRepository implements PostRepository {
 
     @Override
     public Optional<Post> findById(Long id) {
-        String sql = "select id, title, body, likes, created, updated from post where id = ?";
+        String sql = "select id, title, body, image_uuid, likes, created, updated from post where id = ?";
         List<Post> postList = jdbcTemplate.query(sql, postRowMapper, id);
         return postList.stream().findFirst();
     }
@@ -54,17 +56,19 @@ public class JdbcNativePostRepository implements PostRepository {
 
         String title = post.title();
         String body = post.body();
+        String imageUuid = post.imageUuid();
         int likes = 0;
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(con -> {
             PreparedStatement ps = con.prepareStatement(
-                    "insert into post(title, body, likes, created, updated) values (?, ?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
+                    "insert into post(title, body, image_uuid, likes, created, updated) values (?, ?, ?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
             ps.setString(1, title);
             ps.setString(2, body);
-            ps.setInt(3, likes);
-            ps.setTimestamp(4, now);
+            ps.setString(3, imageUuid);
+            ps.setInt(4, likes);
             ps.setTimestamp(5, now);
+            ps.setTimestamp(6, now);
             return ps;
         }, keyHolder);
         return (Long) keyHolder.getKey();
@@ -90,18 +94,22 @@ public class JdbcNativePostRepository implements PostRepository {
 
         String title = post.title();
         String body = post.body();
+        String imageUuid = post.imageUuid();
+        int likes = Optional.ofNullable(post.likes()).orElse(0);
 
         jdbcTemplate.update(con -> {
             PreparedStatement ps = con.prepareStatement(
                     """
                             update post
-                                set title = ?, body = ?, updated = ?
+                                set title = ?, body = ?, image_uuid = ?, likes = ?, updated = ?
                                 where id = ?
                             """);
             ps.setString(1, title);
             ps.setString(2, body);
-            ps.setTimestamp(3, now);
-            ps.setLong(4, post.id());
+            ps.setString(3, imageUuid);
+            ps.setInt(4, likes);
+            ps.setTimestamp(5, now);
+            ps.setLong(6, post.id());
             return ps;
         });
     }

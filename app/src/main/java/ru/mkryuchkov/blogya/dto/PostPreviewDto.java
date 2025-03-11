@@ -6,8 +6,7 @@ public record PostPreviewDto(
         Long id,
         String title,
         String bodyPreview,
-        // TODO: как добавить картинку?
-//        String pictureUUID,
+        String imageUuid,
         String tags,
         Integer commentsCount,
         Integer likes,
