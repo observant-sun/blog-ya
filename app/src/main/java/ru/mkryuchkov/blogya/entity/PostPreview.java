@@ -1,7 +1,6 @@
 package ru.mkryuchkov.blogya.entity;
 
 import java.sql.Timestamp;
-import java.util.List;
 
 public record PostPreview(
         Long id,

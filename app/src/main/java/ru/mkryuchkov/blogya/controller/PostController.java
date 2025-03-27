@@ -12,6 +12,7 @@ import ru.mkryuchkov.blogya.service.FileService;
 import ru.mkryuchkov.blogya.service.PostCommentService;
 import ru.mkryuchkov.blogya.service.PostService;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,7 +37,9 @@ public class PostController {
         Optional<PostDto> postOpt = postService.findById(id);
         postOpt.ifPresent(postDto -> model.addAttribute("post", postDto));
 
-        List<PostCommentDto> comments = postCommentService.findAllByPostId(id);
+        List<PostCommentDto> comments = Optional.ofNullable(postCommentService.findAllByPostId(id))
+                .orElse(Collections.emptyList());
+        model.addAttribute("comments", comments);
 
         return "post";
     }

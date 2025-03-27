@@ -7,7 +7,6 @@ import ru.mkryuchkov.blogya.dto.PostCommentDto;
 import ru.mkryuchkov.blogya.entity.PostComment;
 import ru.mkryuchkov.blogya.mapper.PostCommentMapper;
 import ru.mkryuchkov.blogya.repository.PostCommentRepository;
-import ru.mkryuchkov.blogya.repository.PostRepository;
 
 import java.util.Collections;
 import java.util.List;
@@ -18,7 +17,6 @@ import java.util.Optional;
 public class PostCommentService {
 
     private final PostCommentRepository postCommentRepository;
-    private final PostRepository postRepository;
     private final PostCommentMapper postCommentMapper;
 
     public List<PostCommentDto> findAllByPostId(Long postId) {

@@ -30,15 +30,6 @@ public class JdbcNativePostRepository implements PostRepository {
             rs.getTimestamp("created"),
             rs.getTimestamp("updated")
     );
-    private final ResultSetExtractor<Post> postResultSetExtractor = rs -> new Post(
-            rs.getLong("id"),
-            rs.getString("title"),
-            rs.getString("body"),
-            rs.getString("image_uuid"),
-            rs.getInt("likes"),
-            rs.getTimestamp("created"),
-            rs.getTimestamp("updated")
-    );
 
     @Override
     public Optional<Post> findById(Long id) {
