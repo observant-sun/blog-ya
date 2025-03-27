@@ -1,112 +1,58 @@
 <!DOCTYPE html>
-<html lang="ru" xmlns:th="http://www.thymeleaf.org"><head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-    <!-- Название страницы-->
-    <title>Блог</title>
-
-    <!-- Стили страницы -->
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        h1 {
-            text-align: center;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
-        th, td {
-            border: 1px solid #ccc;
-            padding: 10px;
-            text-align: left;
-        }
-        th {
-            background-color: #f4f4f4;
-        }
-        .actions {
-            text-align: center;
-        }
-        .form-container {
-            margin-top: 20px;
-        }
-        .form-control {
-            width: 100%;
-            padding: 5px;
-            margin-top: 5px;
-        }
-        label {
-            display: block;
-            margin-top: 10px;
-        }
-        input[type="text"], input[type="number"], input[type="checkbox"] {
-            width: 100%;
-            padding: 5px;
-            margin-top: 5px;
-        }
-        input[name="body"] {
-            height: fit-content;
-        }
-        button {
-            padding: 10px 20px;
-            margin-top: 10px;
-            cursor: pointer;
-        }
-        .btn-add {
-            margin-bottom: 20px;
-        }
-    </style>
+<head>
+    <title>Личный блог</title>
 </head>
+
 <body>
-<h1>Блог</h1>
-<button class="btn-add" onclick="toggleAddPostForm()">Добавить пост</button>
-<div th:if="${#lists.isEmpty(postPreviews)}">
-    <p>No posts available.</p>
-</div>
-<div th:if="${!#lists.isEmpty(postPreviews)}">
-    <ul>
-        <li th:each="post : ${postPreviews}">
-            <h2 th:text="${post.title}">Post Title</h2>
-            <p th:text="${post.bodyPreview}">Post body content...</p>
+<form method="GET" action="/posts/add">
+    <button style="float:right;">ДОБАВИТЬ ПОСТ</button>
+</form>
+<table style="width:50%;margin-left:auto;margin-right:auto;">
+    <tr>
+        <td>
+            <form>
+                <p>
+                    <label for="search">Найти по тегу: </label>
+                    <input id="search" style="width:300px;" name="search" th:value="${search}">
+                    <button name="action">&#128269;</button>
+                </p>
+                <p>
+                    <label for="pageSize">Число постов: </label>
+                    <select id="pageSize" name="pageSize" onchange="this.form.submit()">
+                        <option value="5" th:selected="${paging.pageSize()==5}">5</option>
+                        <option value="10" th:selected="${paging.pageSize()==10}">10</option>
+                        <option value="20" th:selected="${paging.pageSize()==20}">20</option>
+                        <option value="50" th:selected="${paging.pageSize()==50}">50</option>
+                        <option value="100" th:selected="${paging.pageSize()==100}">100</option>
+                    </select>
+                </p>
+                <p>
+                    <button th:if="${paging.hasPrevious()}" name="pageNumber" th:value="${paging.pageNumber()-1}">&lt;</button>
+                    <span th:text="${'Страница: '+paging.pageNumber()}"></span>
+                    <button th:if="${paging.hasNext()}" name="pageNumber" th:value="${paging.pageNumber()+1}">&gt;</button>
+                </p>
+            </form>
+        </td>
+    </tr>
+    <tr th:each="post : ${postPreview}">
+        <td style="border-bottom:thin solid;">
+            <h2 th:text="${post.getTitle()}"></h2>
             <p>
-                Tags: <span th:text="${post.tags}">tag1, tag2</span> |
-                Likes: <span th:text="${post.likes}">0</span> |
-                Comments: <span th:text="${post.commentsCount}">0</span>
+                <a th:href="${'/posts/'+post.getId()}">
+                    <img height="300" th:src="${'http://localhost:8080/image/'+post.getImageUuid()}">
+                </a>
+            </p>
+            <p th:text="${post.getTextPreview()}"></p>
+            <p>
+                <span th:text="${'&#x1F44D; '+post.getLikesCount()}"></span>
+                <span th:text="${'&#x2709; '+post.getComments().size()}"></span>
             </p>
             <p>
-                Created: <span th:text="${#dates.format(post.created, 'yyyy-MM-dd HH:mm')}">Date</span> |
-                Updated: <span th:text="${#dates.format(post.updated, 'yyyy-MM-dd HH:mm')}">Date</span>
+                <span th:each="tag : ${post.getTags()}" th:text="${'#'+tag+' '}"></span>
             </p>
-        </li>
-    </ul>
-</div>
-
-<div class="form-container" style="display: none;" id="addPostForm">
-    <h2>Новый пост</h2>
-    <form th:action="@{/post/new}" method="POST">
-        <label for="title">Название:</label>
-        <input type="text" id="title" name="title" required>
-        <label for="body">Текст:</label>
-        <textarea class="form-control" id="body" name="body" rows="5" required></textarea>
-        <label for="tags">Теги:</label>
-        <input type="text" id="tags" name="tags" required>
-        <button type="submit">Добавить</button>
-    </form>
-</div>
-
-<script>
-    function toggleAddPostForm() {
-        const form = document.getElementById('addPostForm');
-        form.style.display = form.style.display === 'none' ? 'block' : 'none';
-    }
-    function toggleAddCommentForm() {
-        const form = document.getElementById('addCommentForm');
-        form.style.display = form.style.display === 'none' ? 'block' : 'none';
-    }
-</script>
+        </td>
+    </tr>
+</table>
 </body>
-</html>
