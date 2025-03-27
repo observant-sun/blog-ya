@@ -4,7 +4,6 @@ import java.sql.Timestamp;
 
 public record PostCommentDto(
         Long id,
-        Long postId,
         String text,
         Timestamp created,
         Timestamp updated

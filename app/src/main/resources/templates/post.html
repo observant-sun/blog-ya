@@ -87,7 +87,7 @@
       <h2>Комментарии</h2>
     </td>
   </tr>
-  <tr th:each="comment : ${post.getComments()}">
+  <tr th:each="comment : ${comments}">
     <td style="border-left:thin solid grey;">
       <form method="POST" th:action="${'/post/'+post.getId()+'/comments/'+comment.getId()}">
         <span th:id="${'comment'+comment.getId()}" th:text="${comment.getText()}"></span>

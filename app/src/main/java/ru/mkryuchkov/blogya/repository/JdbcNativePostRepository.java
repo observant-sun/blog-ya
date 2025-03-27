@@ -120,4 +120,5 @@ public class JdbcNativePostRepository implements PostRepository {
 
         jdbcTemplate.update(sql, id);
     }
+
 }
