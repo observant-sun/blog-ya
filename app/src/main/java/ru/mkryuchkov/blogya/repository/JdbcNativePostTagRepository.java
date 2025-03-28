@@ -41,4 +41,11 @@ public class JdbcNativePostTagRepository implements PostTagRepository {
                 (rs, rowNum) -> rs.getString("tag")
         );
     }
+
+    @Override
+    public void deleteAllTagsForPost(Long postId) {
+        jdbcTemplate.update(
+                "delete from post_tag where post_id = ?",
+                postId);
+    }
 }

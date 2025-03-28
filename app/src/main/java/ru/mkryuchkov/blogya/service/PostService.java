@@ -45,4 +45,10 @@ public class PostService {
         String tags = postTagMapper.toCommaDelimitedString(tagList);
         return postOpt.map(post -> postMapper.toDto(post, tags));
     }
+
+    @Transactional
+    public void deleteById(Long id) {
+        postRepository.deleteById(id);
+        postTagRepository.deleteAllTagsForPost(id);
+    }
 }

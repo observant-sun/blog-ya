@@ -12,10 +12,8 @@ import ru.mkryuchkov.blogya.mapper.PostCommentMapper;
 import ru.mkryuchkov.blogya.repository.PostCommentRepository;
 
 import java.sql.Timestamp;
-import java.time.Instant;
 import java.util.List;
 
-import static java.time.LocalTime.now;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
