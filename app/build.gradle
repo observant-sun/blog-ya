@@ -6,12 +6,14 @@
  */
 
 plugins {
-    // Apply the application plugin to add support for building a CLI application in Java.
-    id 'application'
     id 'war'
+    id 'java'
 
     id("io.freefair.lombok") version "8.12"
 }
+
+group = 'ru.practicum'
+version = '0.0.1-SNAPSHOT'
 
 repositories {
     // Use Maven Central for resolving dependencies.
@@ -39,18 +41,22 @@ dependencies {
     implementation 'org.postgresql:postgresql:42.7.5'
     // https://mvnrepository.com/artifact/org.mapstruct/mapstruct
     implementation 'org.mapstruct:mapstruct:1.6.3'
+    implementation 'org.springframework:spring-context:6.2.2'
     // https://mvnrepository.com/artifact/org.mapstruct/mapstruct-processor
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.6.3'
+
     /********
     test dependencies
     ********/
-    // Use JUnit Jupiter for testing.
-    testImplementation libs.junit.jupiter
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    testImplementation 'org.mockito:mockito-junit-jupiter:5.14.2'
     // https://mvnrepository.com/artifact/org.springframework/spring-test
     testImplementation 'org.springframework:spring-test:6.2.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.11.4'
     // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine
-    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.11.4'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.11.4'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    // https://mvnrepository.com/artifact/org.mockito/mockito-core
+    testImplementation 'org.mockito:mockito-core:5.16.1'
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
@@ -60,12 +66,7 @@ java {
     }
 }
 
-application {
-    // Define the main class for the application.
-    mainClass = 'ru.mkryuchkov.blogya.App'
-}
-
-tasks.named('test') {
+test {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
 }

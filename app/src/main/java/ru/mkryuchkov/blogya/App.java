@@ -3,12 +3,17 @@
  */
 package ru.mkryuchkov.blogya;
 
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+@ComponentScan("ru.mkryuchkov.blogya")
 public class App {
-    public String getGreeting() {
-        return "Hello World!";
-    }
 
     public static void main(String[] args) {
-        System.out.println(new App().getGreeting());
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(App.class);
+        context.close();
     }
 }
+
