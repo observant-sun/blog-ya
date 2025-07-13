@@ -30,6 +30,9 @@ public class PostCommentService {
     @Transactional
     public void save(PostCommentDto dto, Long postId) {
         PostComment postComment = postCommentMapper.toEntity(dto, postId);
+        if (postComment == null) {
+            return;
+        }
         if (postComment.id() == null) {
             postCommentRepository.saveNew(postComment);
         } else {

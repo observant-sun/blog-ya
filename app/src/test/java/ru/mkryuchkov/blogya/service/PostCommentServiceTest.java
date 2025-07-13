@@ -15,8 +15,7 @@ import java.sql.Timestamp;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = ServiceTestConfig.class)
@@ -51,6 +50,38 @@ class PostCommentServiceTest {
     }
 
     @Test
-    void save() {
+    void save_saveNew() {
+        Timestamp timestamp = new Timestamp(414141441L);
+        long postId = 3L;
+        PostComment postComment1 = new PostComment(null, postId, "text", timestamp, timestamp);
+        PostCommentDto postCommentDto1 = new PostCommentDto(null, "text", timestamp, timestamp);
+
+
+        doReturn(postComment1).when(postCommentMapper).toEntity(postCommentDto1, postId);
+        doReturn(4L).when(postCommentRepository).saveNew(postComment1);
+
+        postCommentService.save(postCommentDto1, postId);
+
+        verify(postCommentMapper).toEntity(postCommentDto1, postId);
+        verify(postCommentRepository).saveNew(postComment1);
+        verifyNoMoreInteractions(postCommentRepository);
+    }
+
+    @Test
+    void save_updateExisting() {
+        Timestamp timestamp = new Timestamp(414141441L);
+        long postId = 3L;
+        PostComment postComment1 = new PostComment(1L, postId, "text", timestamp, timestamp);
+        PostCommentDto postCommentDto1 = new PostCommentDto(1L, "text", timestamp, timestamp);
+
+
+        doReturn(postComment1).when(postCommentMapper).toEntity(postCommentDto1, postId);
+        doNothing().when(postCommentRepository).update(postComment1);
+
+        postCommentService.save(postCommentDto1, postId);
+
+        verify(postCommentMapper).toEntity(postCommentDto1, postId);
+        verify(postCommentRepository).update(postComment1);
+        verifyNoMoreInteractions(postCommentRepository);
     }
 }
