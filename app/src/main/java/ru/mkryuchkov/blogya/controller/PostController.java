@@ -50,7 +50,7 @@ public class PostController {
                          @PathVariable(name = "id") Long id,
                          @ModelAttribute PostDto post) {
         String imageUuid = null;
-        if (image != null) {
+        if (image != null && !image.isEmpty()) {
             imageUuid = fileService.saveNewFile(image).map(FileEntity::id).orElse(null);
         }
         postService.update(post, id, imageUuid);

@@ -1,5 +1,6 @@
 package ru.mkryuchkov.blogya.service;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,11 @@ class PostCommentServiceTest {
     @Autowired
     private PostCommentMapper postCommentMapper;
 
+    @BeforeEach
+    void resetMocks() {
+        reset(postCommentRepository, postCommentMapper);
+    }
+
     @Test
     void findAllByPostId() {
         Timestamp timestamp = new Timestamp(414141441L);
@@ -50,38 +56,37 @@ class PostCommentServiceTest {
     }
 
     @Test
-    void save_saveNew() {
+    void saveNew() {
         Timestamp timestamp = new Timestamp(414141441L);
         long postId = 3L;
         PostComment postComment1 = new PostComment(null, postId, "text", timestamp, timestamp);
         PostCommentDto postCommentDto1 = new PostCommentDto(null, "text", timestamp, timestamp);
 
 
-        doReturn(postComment1).when(postCommentMapper).toEntity(postCommentDto1, postId);
-        doReturn(4L).when(postCommentRepository).saveNew(postComment1);
+        when(postCommentMapper.toEntity(postCommentDto1, postId)).thenReturn(postComment1);
 
         postCommentService.saveNew(postCommentDto1, postId);
 
         verify(postCommentMapper).toEntity(postCommentDto1, postId);
         verify(postCommentRepository).saveNew(postComment1);
-        verifyNoMoreInteractions(postCommentRepository);
+        verifyNoMoreInteractions(postCommentRepository, postCommentMapper);
     }
 
     @Test
-    void save_updateExisting() {
+    void update() {
         Timestamp timestamp = new Timestamp(414141441L);
         long postId = 3L;
-        PostComment postComment1 = new PostComment(1L, postId, "text", timestamp, timestamp);
+        long commentId = 4L;
+        PostComment postComment1 = new PostComment(commentId, postId, "text", timestamp, timestamp);
         PostCommentDto postCommentDto1 = new PostCommentDto(1L, "text", timestamp, timestamp);
 
 
-        doReturn(postComment1).when(postCommentMapper).toEntity(postCommentDto1, postId);
-        doNothing().when(postCommentRepository).update(postComment1);
+        when(postCommentMapper.toEntity(postCommentDto1, postId, commentId)).thenReturn(postComment1);
 
-        postCommentService.saveNew(postCommentDto1, postId);
+        postCommentService.update(postCommentDto1, postId, commentId);
 
-        verify(postCommentMapper).toEntity(postCommentDto1, postId);
+        verify(postCommentMapper).toEntity(postCommentDto1, postId, commentId);
         verify(postCommentRepository).update(postComment1);
-        verifyNoMoreInteractions(postCommentRepository);
+        verifyNoMoreInteractions(postCommentRepository, postCommentMapper);
     }
 }

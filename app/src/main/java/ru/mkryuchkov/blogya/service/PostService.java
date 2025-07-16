@@ -59,14 +59,14 @@ public class PostService {
     }
 
     @Transactional
-    public void likePost(Long id, Boolean like) {
+    public void likePost(Long postId, Boolean like) {
         if (like == null) {
             like = false;
         }
         if (like) {
-            postRepository.incrementLikes(id);
+            postRepository.incrementLikes(postId);
         } else {
-            postRepository.decrementLikes(id);
+            postRepository.decrementLikes(postId);
         }
     }
 }
