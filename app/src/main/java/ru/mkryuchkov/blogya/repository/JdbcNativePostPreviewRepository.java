@@ -45,8 +45,9 @@ public class JdbcNativePostPreviewRepository implements PostPreviewRepository {
     @Override
     public List<PostPreview> findAllByTag(String tag, Integer limit, Long offset) {
         String sql = """
-                select id, title, substr(body, ?), likes, created, updated, image_uuid,
-                (select array_agg(post_tag.tag) from post_tag where post_tag.post_id = post.id) as tags
+                select id, title, substr(body, 0, ?) as body_preview, likes, created, updated, image_uuid,
+                (select string_agg(post_tag.tag, ', ') from post_tag where post_tag.post_id = post.id group by id) as tags,
+                (select count(*) from post_comment where post_comment.post_id = post.id) as comments_count
                 from post
                     join post_tag on post.id = post_tag.post_id
                     where post_tag.tag = ?
