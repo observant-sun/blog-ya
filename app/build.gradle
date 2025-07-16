@@ -12,8 +12,8 @@ plugins {
     id("io.freefair.lombok") version "8.12"
 }
 
-group = 'ru.practicum'
-version = '0.0.1-SNAPSHOT'
+group = 'ru.mkryuchkov'
+version = '0.1.0'
 
 repositories {
     // Use Maven Central for resolving dependencies.
@@ -64,6 +64,10 @@ java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(21)
     }
+}
+
+war {
+    archiveBaseName = 'blogya'
 }
 
 test {
