@@ -29,7 +29,6 @@ public class PostPreviewController {
         List<PostPreviewDto> postPreviewPage = postPreviewService.getPage(tag, pageable);
 
         model.addAttribute("postPreviews", postPreviewPage);
-        // TODO: does it work?
         model.addAttribute("paging", pageable);
 
         return "posts";

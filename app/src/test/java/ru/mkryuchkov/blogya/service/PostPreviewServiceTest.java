@@ -9,7 +9,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import ru.mkryuchkov.blogya.ServiceTestConfig;
 import ru.mkryuchkov.blogya.dto.PostPreviewDto;
 import ru.mkryuchkov.blogya.entity.PostPreview;
-import ru.mkryuchkov.blogya.mapper.PostPreviewMapper;
 import ru.mkryuchkov.blogya.repository.PostPreviewRepository;
 
 import java.sql.Timestamp;

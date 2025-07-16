@@ -61,7 +61,10 @@ public class JdbcNativePostRepository implements PostRepository {
             ps.setTimestamp(6, now);
             return ps;
         }, keyHolder);
-        return (Long) keyHolder.getKey();
+        return (Long) Optional.of(keyHolder)
+                .map(KeyHolder::getKeys)
+                .map(keyMap -> keyMap.get("id"))
+                .orElse(null);
     }
 
     @Override

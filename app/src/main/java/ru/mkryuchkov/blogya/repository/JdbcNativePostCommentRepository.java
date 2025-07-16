@@ -33,7 +33,6 @@ public class JdbcNativePostCommentRepository implements PostCommentRepository {
                 select id, post_id, text, created, updated
                 from post_comment
                     order by created desc
-                limit ? offset ?
                 """;
 
         return jdbcTemplate.query(sql, postCommentRowMapper);

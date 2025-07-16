@@ -25,6 +25,19 @@ public class PostController {
     private final PostCommentService postCommentService;
     private final FileService fileService;
 
+    @GetMapping("/new")
+    public String newPost() {
+        return "add-post";
+    }
+
+    @GetMapping("/{id}/edit")
+    public String editPost(@PathVariable(name = "id") Long id, Model model) {
+        Optional<PostDto> postOpt = postService.findById(id);
+        postOpt.ifPresent(postDto -> model.addAttribute("post", postDto));
+
+        return "add-post";
+    }
+
     @PostMapping("/save")
     public String save(@RequestParam("image") MultipartFile image, @ModelAttribute PostDto post) {
         String imageUuid = fileService.saveNewFile(image).map(FileEntity::id).orElse(null);
