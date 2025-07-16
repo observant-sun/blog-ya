@@ -78,31 +78,47 @@ public class JdbcNativePostRepository implements PostRepository {
     }
 
     @Override
-    public void update(Post post) {
+    public void updateText(Post post) {
         if (!existsById(post.id())) {
-            throw new RuntimeException("PostDto not found");
+            throw new RuntimeException("Post with id " + post.id() + " not found");
         }
 
         Timestamp now = Timestamp.from(Instant.now());
 
         String title = post.title();
         String body = post.body();
-        String imageUuid = post.imageUuid();
-        int likes = Optional.ofNullable(post.likes()).orElse(0);
 
         jdbcTemplate.update(con -> {
             PreparedStatement ps = con.prepareStatement(
                     """
                             update post
-                                set title = ?, body = ?, image_uuid = ?, likes = ?, updated = ?
+                                set title = ?, body = ?, updated = ?
                                 where id = ?
                             """);
-            ps.setString(1, title);
-            ps.setString(2, body);
-            ps.setString(3, imageUuid);
-            ps.setInt(4, likes);
-            ps.setTimestamp(5, now);
-            ps.setLong(6, post.id());
+            int i = 1;
+            ps.setString(i++, title);
+            ps.setString(i++, body);
+            ps.setTimestamp(i++, now);
+            ps.setLong(i++, post.id());
+            return ps;
+        });
+    }
+
+    @Override
+    public void updateImage(Long postId, String imageUuid) {
+        if (!existsById(postId)) {
+            throw new RuntimeException("Post not found");
+        }
+        jdbcTemplate.update(con -> {
+            PreparedStatement ps = con.prepareStatement(
+                    """
+                            update post
+                                set image_uuid = ?
+                                where id = ?
+                            """);
+            int i = 1;
+            ps.setString(i++, imageUuid);
+            ps.setLong(i++, postId);
             return ps;
         });
     }
@@ -123,6 +139,18 @@ public class JdbcNativePostRepository implements PostRepository {
                         where id = ?
                         returning likes
                     """;
+        return jdbcTemplate.queryForObject(sql, Integer.class, id);
+    }
+
+    @Override
+    public Integer decrementLikes(Long id) {
+        String sql =
+                """
+                update post
+                    set likes = likes - 1
+                    where id = ?
+                    returning likes
+                """;
         return jdbcTemplate.queryForObject(sql, Integer.class, id);
     }
 

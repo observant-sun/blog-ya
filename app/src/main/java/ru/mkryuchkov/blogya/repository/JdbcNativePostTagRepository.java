@@ -35,7 +35,7 @@ public class JdbcNativePostTagRepository implements PostTagRepository {
     @Override
     public List<String> getTagsForPost(Long postId) {
         return jdbcTemplate.query(
-                "select tag from post_tag where post_id = ?",
+                "select tag from post_tag where post_id = ? order by tag",
                 new Object[]{postId},
                 new int[]{Types.BIGINT},
                 (rs, rowNum) -> rs.getString("tag")

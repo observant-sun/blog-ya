@@ -23,7 +23,7 @@ public class PostPreviewService {
 
     public List<PostPreviewDto> getPage(String tag, Pageable pageable) {
         List<PostPreview> posts;
-        if (tag == null) {
+        if (tag == null || tag.isBlank()) {
             posts = postPreviewRepository.findAll(pageable.getPageSize(), pageable.getOffset());
         } else {
             tag = tag.trim();

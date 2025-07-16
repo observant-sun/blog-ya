@@ -18,14 +18,13 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class OnDiskFileRepository implements FileRepository {
 
-    @Value("${app.file.directory}")
+    @Value("${app.files.directory}")
     private String fileDirectory;
 
     @Override
     public FileEntity saveNewFile(byte[] picture) {
         String uuid = UUID.randomUUID().toString();
         String path = fileDirectory + "/" + uuid;
-        // TODO: is it needed?
         Paths.get(fileDirectory).toFile().mkdirs();
         try {
             Files.write(Paths.get(path), picture, StandardOpenOption.WRITE, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);

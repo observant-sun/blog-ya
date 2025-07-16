@@ -3,8 +3,6 @@ package ru.mkryuchkov.blogya.repository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import ru.mkryuchkov.blogya.entity.PostComment;
 
@@ -12,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -43,13 +42,13 @@ public class JdbcNativePostCommentRepository implements PostCommentRepository {
         if (id == null) {
             return false;
         }
-        String sql = "select count(1) from post_comment where id = ?";
-        Integer count = jdbcTemplate.queryForObject(sql, Integer.class, id);
-        return count != null && count > 0;
+        String sql = "select exists ( select * from post_comment where id = ? )";
+        return Optional.ofNullable(jdbcTemplate.queryForObject(sql, Boolean.class, id))
+                .orElse(false);
     }
 
     @Override
-    public Long saveNew(PostComment postComment) {
+    public void saveNew(PostComment postComment) {
         if (postComment.id() != null) {
             throw new IllegalArgumentException("id is already set");
         }
@@ -58,7 +57,6 @@ public class JdbcNativePostCommentRepository implements PostCommentRepository {
         Long postId = postComment.postId();
         String text = postComment.text();
 
-        KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(con -> {
             PreparedStatement ps = con.prepareStatement(
                     "insert into post_comment(post_id, text, created, updated) values (?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
@@ -67,14 +65,13 @@ public class JdbcNativePostCommentRepository implements PostCommentRepository {
             ps.setTimestamp(3, now);
             ps.setTimestamp(4, now);
             return ps;
-        }, keyHolder);
-        return (Long) keyHolder.getKey();
+        });
     }
 
     @Override
     public void update(PostComment postComment) {
         if (!existsById(postComment.id())) {
-            throw new RuntimeException("comment not found");
+            throw new RuntimeException("comment not found by id " + postComment.id());
         }
         Timestamp now = Timestamp.from(Instant.now());
 
@@ -92,5 +89,10 @@ public class JdbcNativePostCommentRepository implements PostCommentRepository {
             ps.setLong(3, postComment.id());
             return ps;
         });
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        jdbcTemplate.update("delete from post_comment where id = ?", id);
     }
 }

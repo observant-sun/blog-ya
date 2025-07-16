@@ -24,14 +24,20 @@ public class PostService {
     private final PostTagMapper postTagMapper;
 
     @Transactional
-    public void save(PostDto postDto, String imageUuid) {
+    public void saveNew(PostDto postDto, String imageUuid) {
         Post post = postMapper.toEntity(postDto, imageUuid);
-        Long postId = Optional.ofNullable(post).map(Post::id).orElse(null);
 
-        if (postId != null) {
-            postRepository.update(post);
-        } else {
-            postId = postRepository.saveNew(post);
+        Long postId = postRepository.saveNew(post);
+
+        List<String> tags = postTagMapper.toList(postDto.tags());
+        postTagRepository.rewriteAllTagsForPost(postId, tags);
+    }
+
+    public void update(PostDto postDto, Long postId, String imageUuid) {
+        Post post = postMapper.toEntity(postDto, postId, imageUuid);
+        postRepository.updateText(post);
+        if (imageUuid != null) {
+            postRepository.updateImage(postId, imageUuid);
         }
 
         List<String> tags = postTagMapper.toList(postDto.tags());
@@ -53,7 +59,14 @@ public class PostService {
     }
 
     @Transactional
-    public void incrementLikes(Long id) {
-        postRepository.incrementLikes(id);
+    public void likePost(Long id, Boolean like) {
+        if (like == null) {
+            like = false;
+        }
+        if (like) {
+            postRepository.incrementLikes(id);
+        } else {
+            postRepository.decrementLikes(id);
+        }
     }
 }

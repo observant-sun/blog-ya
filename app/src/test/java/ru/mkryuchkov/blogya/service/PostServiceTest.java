@@ -48,7 +48,7 @@ public class PostServiceTest {
         List<String> tags = List.of("tag1", "tag2");
         when(postTagMapper.toList(tagString)).thenReturn(tags);
 
-        postService.save(postDto, imageUuid);
+        postService.saveNew(postDto, imageUuid);
 
         verify(postMapper).toEntity(postDto, imageUuid);
         verify(postRepository).saveNew(post);

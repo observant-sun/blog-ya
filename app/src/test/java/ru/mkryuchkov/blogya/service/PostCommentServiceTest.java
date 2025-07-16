@@ -60,7 +60,7 @@ class PostCommentServiceTest {
         doReturn(postComment1).when(postCommentMapper).toEntity(postCommentDto1, postId);
         doReturn(4L).when(postCommentRepository).saveNew(postComment1);
 
-        postCommentService.save(postCommentDto1, postId);
+        postCommentService.saveNew(postCommentDto1, postId);
 
         verify(postCommentMapper).toEntity(postCommentDto1, postId);
         verify(postCommentRepository).saveNew(postComment1);
@@ -78,7 +78,7 @@ class PostCommentServiceTest {
         doReturn(postComment1).when(postCommentMapper).toEntity(postCommentDto1, postId);
         doNothing().when(postCommentRepository).update(postComment1);
 
-        postCommentService.save(postCommentDto1, postId);
+        postCommentService.saveNew(postCommentDto1, postId);
 
         verify(postCommentMapper).toEntity(postCommentDto1, postId);
         verify(postCommentRepository).update(postComment1);

@@ -38,11 +38,23 @@ public class PostController {
         return "add-post";
     }
 
-    @PostMapping("/save")
-    public String save(@RequestParam("image") MultipartFile image, @ModelAttribute PostDto post) {
+    @PostMapping("/new")
+    public String saveNew(@RequestParam("image") MultipartFile image, @ModelAttribute PostDto post) {
         String imageUuid = fileService.saveNewFile(image).map(FileEntity::id).orElse(null);
-        postService.save(post, imageUuid);
+        postService.saveNew(post, imageUuid);
         return "redirect:/posts";
+    }
+
+    @PostMapping("/{id}")
+    public String update(@RequestParam(value = "image", required = false) MultipartFile image,
+                         @PathVariable(name = "id") Long id,
+                         @ModelAttribute PostDto post) {
+        String imageUuid = null;
+        if (image != null) {
+            imageUuid = fileService.saveNewFile(image).map(FileEntity::id).orElse(null);
+        }
+        postService.update(post, id, imageUuid);
+        return "redirect:/post/" + id;
     }
 
     @GetMapping("/{id}")
@@ -63,9 +75,11 @@ public class PostController {
         return "redirect:/posts";
     }
 
-    @PostMapping("/posts/{id}/like")
-    public String incrementLike(@PathVariable Long id) throws IllegalArgumentException {
-        postService.incrementLikes(id);
+    @PostMapping("/{id}/like")
+    public String likePost(
+            @PathVariable(name = "id") Long id,
+            @RequestParam(name = "like") Boolean like) {
+        postService.likePost(id, like);
 
         return "redirect:/post/{id}";
     }

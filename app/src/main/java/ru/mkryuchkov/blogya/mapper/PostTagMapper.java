@@ -23,7 +23,7 @@ public interface PostTagMapper {
 
     default String toCommaDelimitedString(List<String> tags) {
         return Optional.ofNullable(tags)
-                .map(str -> String.join(", ", str))
+                .map(strings -> String.join(", ", strings))
                 .orElse("");
     }
 }

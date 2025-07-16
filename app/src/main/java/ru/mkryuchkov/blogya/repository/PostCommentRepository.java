@@ -9,7 +9,9 @@ public interface PostCommentRepository {
 
     boolean existsById(Long id);
 
-    Long saveNew(PostComment postComment);
+    void saveNew(PostComment postComment);
 
     void update(PostComment postComment);
+
+    void deleteById(Long id);
 }

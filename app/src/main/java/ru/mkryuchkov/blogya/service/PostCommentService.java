@@ -28,15 +28,18 @@ public class PostCommentService {
     }
 
     @Transactional
-    public void save(PostCommentDto dto, Long postId) {
+    public void saveNew(PostCommentDto dto, Long postId) {
         PostComment postComment = postCommentMapper.toEntity(dto, postId);
-        if (postComment == null) {
-            return;
-        }
-        if (postComment.id() == null) {
-            postCommentRepository.saveNew(postComment);
-        } else {
-            postCommentRepository.update(postComment);
-        }
+        postCommentRepository.saveNew(postComment);
+    }
+
+    @Transactional
+    public void update(PostCommentDto dto, Long postId, Long commentId) {
+        PostComment postComment = postCommentMapper.toEntity(dto, postId, commentId);
+        postCommentRepository.update(postComment);
+    }
+
+    public void delete(Long commentId) {
+        postCommentRepository.deleteById(commentId);
     }
 }

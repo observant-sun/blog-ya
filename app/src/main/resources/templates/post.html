@@ -45,18 +45,18 @@
 <body>
 <!--/*@thymesVar id="post" type="ru.mkryuchkov.blogya.dto.PostDto"*/-->
 <!--/*@thymesVar id="comments" type="java.util.List<ru.mkryuchkov.blogya.dto.PostCommentDto>"*/-->
-<a href="/posts" style="float:right;">
+<a th:href="@{/posts}" style="float:right;">
   <b>НА ГЛАВНУЮ &cudarrr;</b>
 </a>
 <table style="width:50%;margin-left:auto;margin-right:auto;">
   <tr>
     <td>
-      <form method="GET" th:action="${'/post/'+post.id()+'/edit'}">
+      <form method="GET" th:action="@{/post/{id}/edit(id=${post.id()})}">
         <button style="float:right;">РЕДАКТИРОВАТЬ ПОСТ</button>
       </form>
     </td>
     <td>
-      <form method="POST" th:action="${'/post/'+post.id()+'/delete'}">
+      <form method="POST" th:action="@{/post/{id}/delete(id=${post.id()})}">
         <button style="float:right;">УДАЛИТЬ ПОСТ</button>
       </form>
     </td>
@@ -65,19 +65,16 @@
     <td>
       <h2 th:text="${post.title()}"></h2>
       <p>
-        <img height="300" th:src="@{'/image/'+post.imageUuid()}">
+        <img height="300" th:src="@{/image/{imageUuid}(imageUuid=${post.imageUuid()})}">
       </p>
       <p>
-      <form th:action="@{'/posts/'+post.id()+'/like'}" method="post">
+      <form th:action="@{'/post/{id}/like'(id=${post.id()})}" method="post">
         <button name="like" value="true">&#x1F44D;</button>
         <span th:text="${post.likes()}"></span>
         <button name="like" value="false">&#128078;</button>
         <span th:text="${'комментарии '+comments.size()}" style="float:right;"></span>
       </form>
-      </p>
-      <p>
-        <span th:each="tag : ${post.tags()}" th:text="${'#'+tag+' '}"></span>
-      </p>
+      <p th:text="${(post == null || post.tags() == null || post.tags().isBlank()) ? 'У поста нет тегов' : 'Теги: '+post.tags()}" />
     </td>
   </tr>
   <tr>
@@ -91,20 +88,20 @@
   </tr>
   <tr th:each="comment : ${comments}">
     <td style="border-left:thin solid grey;">
-      <form method="POST" th:action="@{'/post/'+post.getId()+'/comments/'+comment.getId()}">
-        <span th:id="${'comment'+comment.id()}" th:text="${comment.text()()}"></span>
+      <form method="POST" th:action="@{'/post/{id}/comment/{commentId}/update'(id=${post.id()},commentId=${comment.id()})}">
+        <span th:id="${'comment'+comment.id()}" th:text="${comment.text()}"></span>
         <button th:id="${comment.id()}" onclick="editComment(this.id)" style="float:right;">&#9998;</button>
       </form>
     </td>
     <td>
-      <form method="POST" th:action="@{'/post/'+post.id()+'/comments/'+comment.id()+'/delete'}">
+      <form method="POST" th:action="@{'/post/{id}/comment/{commentId}/delete'(id=${post.id()},commentId=${comment.id()})}">
         <button style="float:right;">&#10007;</button>
       </form>
     </td>
   </tr>
   <tr>
     <td>
-      <form id="addCommentForm" th:action="@{'/post/'+post.id()+'/comments'}" method="post">
+      <form id="addCommentForm" th:action="@{'/post/{id}/comment/new'(id=${post.id()})}" method="post">
         <button id="addCommentButton" style="float:right;" onclick="addComment()">Добавить комментарий</button>
       </form>
     </td>

@@ -10,7 +10,9 @@ public interface PostRepository {
 
     Long saveNew(Post post);
 
-    void update(Post post);
+    void updateText(Post post);
+
+    void updateImage(Long postId, String imageUuid);
 
     boolean existsById(Long id);
 
@@ -18,4 +20,5 @@ public interface PostRepository {
 
     Integer incrementLikes(Long id);
 
+    Integer decrementLikes(Long id);
 }
