@@ -36,7 +36,7 @@
             </form>
         </td>
     </tr>
-    <tr th:each="post : ${postPreview}">
+    <tr th:each="post : ${postPreviews}">
         <td style="border-bottom:thin solid;">
             <h2 th:text="${post.getTitle()}"></h2>
             <p>

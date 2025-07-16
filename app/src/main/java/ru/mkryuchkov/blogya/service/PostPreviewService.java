@@ -1,12 +1,12 @@
 package ru.mkryuchkov.blogya.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.mkryuchkov.blogya.dto.PostPreviewDto;
 import ru.mkryuchkov.blogya.entity.PostPreview;
 import ru.mkryuchkov.blogya.mapper.PostPreviewMapper;
 import ru.mkryuchkov.blogya.repository.PostPreviewRepository;
-import ru.mkryuchkov.blogya.util.PagingUtils;
 
 import java.util.Collections;
 import java.util.List;
@@ -19,16 +19,15 @@ public class PostPreviewService {
 
     private final PostPreviewRepository postPreviewRepository;
 
-    private final PagingUtils pagingUtils;
     private final PostPreviewMapper postPreviewMapper;
 
-    public List<PostPreviewDto> getPage(String tag, Integer page, Integer pageSize) {
-        Integer offset = pagingUtils.getOffset(page, pageSize);
+    public List<PostPreviewDto> getPage(String tag, Pageable pageable) {
         List<PostPreview> posts;
         if (tag == null) {
-            posts = postPreviewRepository.findAll(pageSize, offset);
+            posts = postPreviewRepository.findAll(pageable.getPageSize(), pageable.getOffset());
         } else {
-            posts = postPreviewRepository.findAllByTag(tag, pageSize, offset);
+            tag = tag.trim();
+            posts = postPreviewRepository.findAllByTag(tag, pageable.getPageSize(), pageable.getOffset());
         }
         return Optional.ofNullable(posts).orElse(Collections.emptyList())
                 .stream()

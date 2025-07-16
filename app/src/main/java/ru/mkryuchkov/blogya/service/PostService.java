@@ -51,4 +51,9 @@ public class PostService {
         postRepository.deleteById(id);
         postTagRepository.deleteAllTagsForPost(id);
     }
+
+    @Transactional
+    public void incrementLikes(Long id) {
+        postRepository.incrementLikes(id);
+    }
 }

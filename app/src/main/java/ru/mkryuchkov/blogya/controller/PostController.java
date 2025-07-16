@@ -44,9 +44,17 @@ public class PostController {
         return "post";
     }
 
-    @PostMapping("/delete")
+    @PostMapping("/delete/{id}")
     public String delete(@PathVariable(name = "id") Long id) {
         postService.deleteById(id);
         return "redirect:/posts";
     }
+
+    @PostMapping("/posts/{id}/like")
+    public String incrementLike(@PathVariable Long id) throws IllegalArgumentException {
+        postService.incrementLikes(id);
+
+        return "redirect:/post/{id}";
+    }
+
 }

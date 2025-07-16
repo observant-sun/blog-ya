@@ -10,7 +10,6 @@ import ru.mkryuchkov.blogya.mapper.PostMapper;
 import ru.mkryuchkov.blogya.mapper.PostPreviewMapper;
 import ru.mkryuchkov.blogya.mapper.PostTagMapper;
 import ru.mkryuchkov.blogya.repository.*;
-import ru.mkryuchkov.blogya.util.PagingUtils;
 
 @Configuration
 @ComponentScan({"ru.mkryuchkov.blogya.service"})
@@ -44,12 +43,6 @@ public class ServiceTestConfig {
     @Primary
     public PostTagRepository postTagRepository() {
         return Mockito.mock(PostTagRepository.class);
-    }
-
-    @Bean
-    @Primary
-    public PagingUtils pagingUtils() {
-        return Mockito.mock(PagingUtils.class);
     }
 
     @Bean

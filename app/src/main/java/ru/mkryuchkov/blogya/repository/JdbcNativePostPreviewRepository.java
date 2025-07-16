@@ -29,7 +29,7 @@ public class JdbcNativePostPreviewRepository implements PostPreviewRepository {
     );
 
     @Override
-    public List<PostPreview> findAll(Integer limit, Integer offset) {
+    public List<PostPreview> findAll(Integer limit, Long offset) {
         String sql = """
                 select id, title, substr(body, 0, ?) as body_preview, likes, created, updated, image_uuid,
                 (select string_agg(post_tag.tag, ', ') from post_tag where post_tag.post_id = post.id group by id) as tags,
@@ -43,7 +43,7 @@ public class JdbcNativePostPreviewRepository implements PostPreviewRepository {
     }
 
     @Override
-    public List<PostPreview> findAllByTag(String tag, Integer limit, Integer offset) {
+    public List<PostPreview> findAllByTag(String tag, Integer limit, Long offset) {
         String sql = """
                 select id, title, substr(body, ?), likes, created, updated, image_uuid,
                 (select array_agg(post_tag.tag) from post_tag where post_tag.post_id = post.id) as tags
