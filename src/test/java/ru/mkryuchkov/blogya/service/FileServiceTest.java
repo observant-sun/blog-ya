@@ -63,6 +63,30 @@ public class FileServiceTest {
     }
 
     @Test
+    void saveNewFile_multipartFile_getBytesThrowsIOException() throws IOException {
+        MultipartFile multipartFile = mock(MultipartFile.class);
+
+        when(multipartFile.getBytes()).thenThrow(new IOException("IO exception"));
+
+        assertThrows(RuntimeException.class, () -> fileService.saveNewFile(multipartFile));
+        verify(multipartFile).getBytes();
+        verifyNoMoreInteractions(multipartFile, fileRepository);
+    }
+
+    @Test
+    void saveNewFile_multipartFile_getBytesReturnsNull() throws IOException {
+        MultipartFile multipartFile = mock(MultipartFile.class);
+
+        when(multipartFile.getBytes()).thenReturn(null);
+
+        Optional<FileEntity> actual = fileService.saveNewFile(multipartFile);
+        verify(multipartFile).getBytes();
+        verifyNoMoreInteractions(multipartFile, fileRepository);
+
+        assertFalse(actual.isPresent());
+    }
+
+    @Test
     void findById() {
         byte[] content = {1, 2, 3};
         FileEntity fileEntity = new FileEntity("10", content);

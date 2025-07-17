@@ -89,4 +89,13 @@ class PostCommentServiceTest {
         verify(postCommentRepository).update(postComment1);
         verifyNoMoreInteractions(postCommentRepository, postCommentMapper);
     }
+
+    @Test
+    void delete() {
+        long commentId = 1L;
+        postCommentService.delete(commentId);
+
+        verify(postCommentRepository).deleteById(commentId);
+        verifyNoMoreInteractions(postCommentRepository, postCommentMapper);
+    }
 }

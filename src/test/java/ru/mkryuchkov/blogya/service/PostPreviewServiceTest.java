@@ -35,7 +35,39 @@ class PostPreviewServiceTest {
     }
 
     @Test
-    void getPage() {
+    void getPage_nullTag() {
+        Timestamp timestamp = new Timestamp(414141441L);
+        Long offset = 6L;
+        int page = 3;
+        int pageSize = 2;
+        PostPreview postPreview1 = new PostPreview(1L, "title1", "bodyPreview1", "imageUuid", "tags", 123, 1234, timestamp, timestamp);
+        PostPreview postPreview2 = new PostPreview(2L, "title1", "bodyPreview1", "imageUuid", "tags", 123, 1234, timestamp, timestamp);
+        String tag = null;
+        Pageable pageable = Pageable.ofSize(pageSize).withPage(page);
+        doReturn(List.of(postPreview1, postPreview2)).when(postPreviewRepository).findAll(pageSize, offset);
+        List<PostPreviewDto> actual = postPreviewService.getPage(tag, pageable);
+        assertNotNull(actual);
+        assertEquals(2, actual.size());
+    }
+
+    @Test
+    void getPage_blankTag() {
+        Timestamp timestamp = new Timestamp(414141441L);
+        Long offset = 6L;
+        int page = 3;
+        int pageSize = 2;
+        PostPreview postPreview1 = new PostPreview(1L, "title1", "bodyPreview1", "imageUuid", "tags", 123, 1234, timestamp, timestamp);
+        PostPreview postPreview2 = new PostPreview(2L, "title1", "bodyPreview1", "imageUuid", "tags", 123, 1234, timestamp, timestamp);
+        String tag = " ";
+        Pageable pageable = Pageable.ofSize(pageSize).withPage(page);
+        doReturn(List.of(postPreview1, postPreview2)).when(postPreviewRepository).findAll(pageSize, offset);
+        List<PostPreviewDto> actual = postPreviewService.getPage(tag, pageable);
+        assertNotNull(actual);
+        assertEquals(2, actual.size());
+    }
+
+    @Test
+    void getPage_nonEmptyTag() {
         Timestamp timestamp = new Timestamp(414141441L);
         Long offset = 6L;
         int page = 3;
