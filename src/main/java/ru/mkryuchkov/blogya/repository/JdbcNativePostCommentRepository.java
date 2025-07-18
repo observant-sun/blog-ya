@@ -31,10 +31,11 @@ public class JdbcNativePostCommentRepository implements PostCommentRepository {
         String sql = """
                 select id, post_id, "text", created, updated
                 from post_comment
+                where post_id = ?
                     order by created desc
                 """;
 
-        return jdbcTemplate.query(sql, postCommentRowMapper);
+        return jdbcTemplate.query(sql, postCommentRowMapper, postId);
     }
 
     @Override
