@@ -17,15 +17,6 @@ public class BaseControllerTest {
     @Autowired
     protected MockMvc mockMvc;
 
-    @Autowired
-    protected ImageController imageController;
-    @Autowired
-    protected PostCommentController postCommentController;
-    @Autowired
-    protected PostController postController;
-    @Autowired
-    protected PostPreviewController postPreviewController;
-
     @MockitoBean
     protected FileService fileService;
     @MockitoBean
