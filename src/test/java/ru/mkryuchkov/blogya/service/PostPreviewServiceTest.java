@@ -1,14 +1,9 @@
 package ru.mkryuchkov.blogya.service;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import ru.mkryuchkov.blogya.dto.PostPreviewDto;
 import ru.mkryuchkov.blogya.entity.PostPreview;
-import ru.mkryuchkov.blogya.mapper.PostPreviewMapper;
-import ru.mkryuchkov.blogya.repository.PostPreviewRepository;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -16,16 +11,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest(classes = PostPreviewService.class)
-class PostPreviewServiceTest {
-
-    @Autowired
-    private PostPreviewService postPreviewService;
-
-    @MockitoBean
-    private PostPreviewRepository postPreviewRepository;
-    @MockitoBean
-    private PostPreviewMapper postPreviewMapper;
+class PostPreviewServiceTest extends BaseServiceTest {
 
     private void verifyNoMoreMockInteractions() {
         verifyNoMoreInteractions(postPreviewRepository, postPreviewMapper);

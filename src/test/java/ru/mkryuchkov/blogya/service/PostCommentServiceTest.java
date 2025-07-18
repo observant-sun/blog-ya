@@ -1,13 +1,8 @@
 package ru.mkryuchkov.blogya.service;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import ru.mkryuchkov.blogya.dto.PostCommentDto;
 import ru.mkryuchkov.blogya.entity.PostComment;
-import ru.mkryuchkov.blogya.mapper.PostCommentMapper;
-import ru.mkryuchkov.blogya.repository.PostCommentRepository;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -15,16 +10,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest(classes = PostCommentService.class)
-class PostCommentServiceTest {
-
-    @Autowired
-    private PostCommentService postCommentService;
-
-    @MockitoBean
-    private PostCommentRepository postCommentRepository;
-    @MockitoBean
-    private PostCommentMapper postCommentMapper;
+class PostCommentServiceTest extends BaseServiceTest {
 
     @Test
     void findAllByPostId() {
