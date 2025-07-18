@@ -35,7 +35,10 @@ public class PostController {
     @GetMapping("/{id}/edit")
     public String editPost(@PathVariable(name = "id") Long id, Model model) {
         Optional<PostDto> postOpt = postService.findById(id);
-        postOpt.ifPresent(postDto -> model.addAttribute("post", postDto));
+        if (postOpt.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+        model.addAttribute("post", postOpt.get());
 
         return "add-post";
     }

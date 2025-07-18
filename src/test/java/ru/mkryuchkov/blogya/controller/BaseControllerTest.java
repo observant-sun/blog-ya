@@ -12,7 +12,7 @@ import ru.mkryuchkov.blogya.service.PostService;
 
 @WebMvcTest
 @ContextConfiguration(classes = ControllerTestConfig.class)
-public class BaseControllerTest {
+public abstract class BaseControllerTest {
 
     @Autowired
     protected MockMvc mockMvc;

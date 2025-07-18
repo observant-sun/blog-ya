@@ -154,4 +154,8 @@ public class JdbcNativePostRepository implements PostRepository {
         return jdbcTemplate.queryForObject(sql, Integer.class, id);
     }
 
+    @Override
+    public void deleteAll() {
+        jdbcTemplate.update("delete from post");
+    }
 }

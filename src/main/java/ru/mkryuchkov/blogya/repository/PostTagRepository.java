@@ -9,4 +9,6 @@ public interface PostTagRepository {
     List<String> getTagsForPost(Long postId);
 
     void deleteAllTagsForPost(Long postId);
+
+    void deleteAll();
 }

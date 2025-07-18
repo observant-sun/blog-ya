@@ -10,4 +10,6 @@ public interface FileRepository {
 
     Optional<FileEntity> getById(String id);
 
+    void deleteAll();
+
 }

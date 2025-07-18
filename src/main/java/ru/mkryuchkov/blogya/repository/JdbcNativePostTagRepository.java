@@ -48,4 +48,9 @@ public class JdbcNativePostTagRepository implements PostTagRepository {
                 "delete from post_tag where post_id = ?",
                 postId);
     }
+
+    @Override
+    public void deleteAll() {
+        jdbcTemplate.update("delete from post_tag");
+    }
 }

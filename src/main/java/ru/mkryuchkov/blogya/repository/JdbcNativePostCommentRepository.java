@@ -29,7 +29,7 @@ public class JdbcNativePostCommentRepository implements PostCommentRepository {
     @Override
     public List<PostComment> findAllByPostId(Long postId) {
         String sql = """
-                select id, post_id, text, created, updated
+                select id, post_id, "text", created, updated
                 from post_comment
                     order by created desc
                 """;
@@ -59,7 +59,7 @@ public class JdbcNativePostCommentRepository implements PostCommentRepository {
 
         jdbcTemplate.update(con -> {
             PreparedStatement ps = con.prepareStatement(
-                    "insert into post_comment(post_id, text, created, updated) values (?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
+                    "insert into post_comment(post_id, \"text\", created, updated) values (?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
             ps.setLong(1, postId);
             ps.setString(2, text);
             ps.setTimestamp(3, now);
@@ -81,7 +81,7 @@ public class JdbcNativePostCommentRepository implements PostCommentRepository {
             PreparedStatement ps = con.prepareStatement(
                     """
                             update post_comment
-                                set text = ?, updated = ?
+                                set "text" = ?, updated = ?
                             where id = ?
                             """);
             ps.setString(1, text);
@@ -94,5 +94,10 @@ public class JdbcNativePostCommentRepository implements PostCommentRepository {
     @Override
     public void deleteById(Long id) {
         jdbcTemplate.update("delete from post_comment where id = ?", id);
+    }
+
+    @Override
+    public void deleteAll() {
+        jdbcTemplate.update("delete from post_comment");
     }
 }

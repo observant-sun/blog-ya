@@ -8,10 +8,12 @@ import ru.mkryuchkov.blogya.entity.FileEntity;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 @Repository
 @Slf4j
@@ -45,4 +47,24 @@ public class OnDiskFileRepository implements FileRepository {
         }
         return Optional.empty();
     }
+
+    @Override
+    public void deleteAll() {
+        try (Stream<Path> list = Files.list(Path.of(fileDirectory))) {
+            list.forEach(path -> {
+                if (Files.isDirectory(path)) {
+                    return;
+                }
+                try {
+                    Files.delete(path);
+                } catch (IOException e) {
+                    log.error("Can't delete file", e);
+                }
+            });
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
 }

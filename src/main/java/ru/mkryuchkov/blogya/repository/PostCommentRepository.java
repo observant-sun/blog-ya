@@ -14,4 +14,6 @@ public interface PostCommentRepository {
     void update(PostComment postComment);
 
     void deleteById(Long id);
+
+    void deleteAll();
 }
