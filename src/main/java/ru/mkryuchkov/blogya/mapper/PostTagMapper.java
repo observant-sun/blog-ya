@@ -18,6 +18,7 @@ public interface PostTagMapper {
                 .orElse(List.of()).stream()
                 .map(String::trim)
                 .filter(str -> !str.isEmpty())
+                .distinct()
                 .collect(Collectors.toList());
     }
 

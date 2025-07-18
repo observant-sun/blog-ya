@@ -27,6 +27,7 @@ CREATE INDEX post_comment_post_id_index ON public.post_comment USING btree (post
 
 CREATE TABLE public.post_tag (
                                  post_id int8 NOT NULL,
-                                 tag varchar NOT NULL
+                                 tag varchar NOT NULL,
+                                 CONSTRAINT post_tag_pk PRIMARY KEY (post_id, tag)
 );
 CREATE INDEX post_tag_post_id_index ON public.post_tag USING btree (post_id);
