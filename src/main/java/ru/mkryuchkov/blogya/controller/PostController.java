@@ -1,10 +1,12 @@
 package ru.mkryuchkov.blogya.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 import ru.mkryuchkov.blogya.dto.PostCommentDto;
 import ru.mkryuchkov.blogya.dto.PostDto;
 import ru.mkryuchkov.blogya.entity.FileEntity;
@@ -60,7 +62,10 @@ public class PostController {
     @GetMapping("/{id}")
     public String show(@PathVariable(name = "id") Long id, Model model) {
         Optional<PostDto> postOpt = postService.findById(id);
-        postOpt.ifPresent(postDto -> model.addAttribute("post", postDto));
+        if (postOpt.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+        model.addAttribute("post", postOpt.get());
 
         List<PostCommentDto> comments = Optional.ofNullable(postCommentService.findAllByPostId(id))
                 .orElse(Collections.emptyList());
