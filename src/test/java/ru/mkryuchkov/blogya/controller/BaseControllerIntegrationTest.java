@@ -32,7 +32,7 @@ public abstract class BaseControllerIntegrationTest {
 
     @BeforeEach
     public void setUp() {
-        Paths.get(fileDirectory).toFile().mkdirs();
+
         fileRepository.deleteAll();
         postCommentRepository.deleteAll();
         postRepository.deleteAll();

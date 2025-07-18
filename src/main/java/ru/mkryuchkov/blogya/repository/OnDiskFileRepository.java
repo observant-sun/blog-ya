@@ -27,7 +27,7 @@ public class OnDiskFileRepository implements FileRepository {
     public FileEntity saveNewFile(byte[] picture) {
         String uuid = UUID.randomUUID().toString();
         String path = fileDirectory + "/" + uuid;
-        Paths.get(fileDirectory).toFile().mkdirs();
+        createFileDirectory();
         try {
             Files.write(Paths.get(path), picture, StandardOpenOption.WRITE, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
         } catch (IOException e) {
@@ -66,5 +66,8 @@ public class OnDiskFileRepository implements FileRepository {
         }
     }
 
-
+    @Override
+    public void createFileDirectory() {
+        Paths.get(fileDirectory).toFile().mkdirs();
+    }
 }

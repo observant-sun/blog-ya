@@ -12,4 +12,6 @@ public interface FileRepository {
 
     void deleteAll();
 
+    void createFileDirectory();
+
 }
