@@ -2,17 +2,10 @@ package ru.mkryuchkov.blogya.controller;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.web.multipart.MultipartFile;
-import ru.mkryuchkov.blogya.dto.PostCommentDto;
-import ru.mkryuchkov.blogya.dto.PostDto;
 import ru.mkryuchkov.blogya.dto.PostPreviewDto;
-import ru.mkryuchkov.blogya.entity.FileEntity;
 
 import java.sql.Timestamp;
 import java.util.List;
-import java.util.Optional;
 
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
