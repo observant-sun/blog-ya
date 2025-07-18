@@ -1,12 +1,9 @@
 package ru.mkryuchkov.blogya.service;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import ru.mkryuchkov.blogya.ServiceTestConfig;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import ru.mkryuchkov.blogya.dto.PostCommentDto;
 import ru.mkryuchkov.blogya.entity.PostComment;
 import ru.mkryuchkov.blogya.mapper.PostCommentMapper;
@@ -18,22 +15,16 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = ServiceTestConfig.class)
+@SpringBootTest(classes = PostCommentService.class)
 class PostCommentServiceTest {
 
     @Autowired
     private PostCommentService postCommentService;
 
-    @Autowired
+    @MockitoBean
     private PostCommentRepository postCommentRepository;
-    @Autowired
+    @MockitoBean
     private PostCommentMapper postCommentMapper;
-
-    @BeforeEach
-    void resetMocks() {
-        reset(postCommentRepository, postCommentMapper);
-    }
 
     @Test
     void findAllByPostId() {

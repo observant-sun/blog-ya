@@ -1,12 +1,9 @@
 package ru.mkryuchkov.blogya.service;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import ru.mkryuchkov.blogya.ServiceTestConfig;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import ru.mkryuchkov.blogya.dto.PostDto;
 import ru.mkryuchkov.blogya.entity.Post;
 import ru.mkryuchkov.blogya.mapper.PostMapper;
@@ -21,25 +18,20 @@ import java.util.UUID;
 
 import static org.mockito.Mockito.*;
 
-@ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = ServiceTestConfig.class)
+@SpringBootTest(classes = PostService.class)
 public class PostServiceTest {
 
     @Autowired
-    private PostMapper postMapper;
-    @Autowired
     private PostService postService;
-    @Autowired
-    private PostRepository postRepository;
-    @Autowired
-    private PostTagMapper postTagMapper;
-    @Autowired
-    private PostTagRepository postTagRepository;
 
-    @BeforeEach
-    public void resetMocks() {
-        reset(postMapper, postTagMapper, postRepository, postTagRepository);
-    }
+    @MockitoBean
+    private PostMapper postMapper;
+    @MockitoBean
+    private PostRepository postRepository;
+    @MockitoBean
+    private PostTagMapper postTagMapper;
+    @MockitoBean
+    private PostTagRepository postTagRepository;
 
     private void verifyNoMoreMockInteractions() {
         verifyNoMoreInteractions(postMapper, postTagRepository, postRepository, postTagMapper);

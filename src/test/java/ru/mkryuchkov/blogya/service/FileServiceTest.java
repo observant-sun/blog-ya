@@ -1,13 +1,10 @@
 package ru.mkryuchkov.blogya.service;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.web.multipart.MultipartFile;
-import ru.mkryuchkov.blogya.ServiceTestConfig;
 import ru.mkryuchkov.blogya.entity.FileEntity;
 import ru.mkryuchkov.blogya.repository.FileRepository;
 
@@ -17,20 +14,14 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = ServiceTestConfig.class)
+@SpringBootTest(classes = FileService.class)
 public class FileServiceTest {
 
-    @Autowired
+    @MockitoBean
     private FileRepository fileRepository;
 
     @Autowired
     private FileService fileService;
-
-    @BeforeEach
-    void resetMocks() {
-        reset(fileRepository);
-    }
 
     @Test
     void saveNewFile_byteArray() {
