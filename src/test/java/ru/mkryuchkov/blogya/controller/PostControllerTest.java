@@ -50,8 +50,7 @@ public class PostControllerTest extends BaseControllerTest {
         when(postService.findById(postId)).thenReturn(Optional.empty());
 
         mockMvc.perform(get("/post/{postId}/edit", postId))
-                .andExpect(status().isOk())
-                .andExpect(view().name("add-post"));
+                .andExpect(status().isNotFound());
 
         verify(postService).findById(postId);
     }

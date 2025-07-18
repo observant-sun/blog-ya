@@ -18,9 +18,9 @@ public interface PostRepository {
 
     void deleteById(Long id);
 
-    Integer incrementLikes(Long id);
+    void incrementLikes(Long id);
 
-    Integer decrementLikes(Long id);
+    void decrementLikes(Long id);
 
     void deleteAll();
 }

@@ -131,27 +131,25 @@ public class JdbcNativePostRepository implements PostRepository {
     }
 
     @Override
-    public Integer incrementLikes(Long id) {
+    public void incrementLikes(Long id) {
         String sql =
                     """
                     update post
                         set likes = likes + 1
                         where id = ?
-                        returning likes
                     """;
-        return jdbcTemplate.queryForObject(sql, Integer.class, id);
+        jdbcTemplate.update(sql, id);
     }
 
     @Override
-    public Integer decrementLikes(Long id) {
+    public void decrementLikes(Long id) {
         String sql =
                 """
                 update post
                     set likes = likes - 1
                     where id = ?
-                    returning likes
                 """;
-        return jdbcTemplate.queryForObject(sql, Integer.class, id);
+        jdbcTemplate.update(sql, id);
     }
 
     @Override
